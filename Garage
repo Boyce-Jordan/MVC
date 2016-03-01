@@ -1,0 +1,37 @@
+package jordanboyce.mygarage;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by JordanTBoyce on 2/23/2016.
+ */
+public class Garage {
+
+    Map<Integer, Vehicle> vehicleList;
+
+    public Garage() {
+        vehicleList = new HashMap<>();
+    }
+
+
+    public ArrayList<Vehicle> getAllVehicles() {
+        return new ArrayList<>(vehicleList.values());
+    }
+
+    public Vehicle getVehicle(Integer vehicleID) {
+
+        return vehicleList.get(vehicleID);
+
+    }
+
+    public void addVehicle(Integer vehicleID, Vehicle vehicle) {
+        vehicleList.put(vehicleID, vehicle);
+    }
+
+    public int getTotalVehicleNumber() {
+        return vehicleList.size();
+    }
+
+}

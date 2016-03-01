@@ -1,0 +1,147 @@
+package jordanboyce.mygarage;
+
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class MainActivity extends ActionBarActivity {
+
+    // Reference to the View
+    //Plugs
+    Button buttonChange;
+    Button addButton;
+
+    EditText editMake;
+    EditText editModel;
+    EditText editYear;
+    TextView infoLabel;
+    TextView totalNumberLabel;
+
+
+    // Reference to the model
+    Garage myGarage = new Garage();
+
+
+    private Integer vehicleID = 10001;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initializing the View
+        // Connecting to the plugs
+        buttonChange = (Button) findViewById(R.id.changeButton);
+        addButton = (Button) findViewById(R.id.buttonAdd);
+
+        editMake = (EditText) findViewById(R.id.editMake);
+        editModel = (EditText) findViewById(R.id.editModel);
+        editYear = (EditText) findViewById(R.id.editYear);
+        infoLabel = (TextView) findViewById(R.id.resultLabel);
+        totalNumberLabel = (TextView) findViewById(R.id.totalLabel);
+
+
+        // Update the view when the app first loads
+        updateView();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    public void changeVehicleInfo(View view) {
+
+
+        if (myGarage.getTotalVehicleNumber() != 0) {
+
+            int vehicleTempID = vehicleID - 1;
+
+            if (!editMake.getText().toString().equals("")) {
+                System.out.println("Change Name: " + editMake.getText().toString());
+                myGarage.getVehicle(vehicleTempID).setMake(editMake.getText().toString());
+            }
+
+            if (!editModel.getText().toString().equals("")) {
+                myGarage.getVehicle(vehicleTempID).setModel(editModel.getText().toString());
+            }
+
+            if (!editYear.getText().toString().equals("")) {
+                myGarage.getVehicle(vehicleTempID).setYear(editYear.getText().toString());
+            }
+
+        }
+        updateView();
+    }
+
+
+    public void addNewVehicle(View view) {
+
+        String tempMake = "";
+        String tempModel = "";
+        String tempYear = "";
+
+        if (!editMake.getText().toString().equals("")) {
+            tempMake = editMake.getText().toString();
+        }
+
+        if (!editModel.getText().toString().equals("")) {
+            tempModel = editModel.getText().toString();
+        }
+
+        if (!editYear.getText().toString().equals("")) {
+            tempYear = editYear.getText().toString();
+        }
+
+
+        Vehicle vehicle = new Vehicle(tempMake, tempModel, tempYear);
+        myGarage.addVehicle(vehicleID, vehicle);
+
+        vehicleID++;
+
+        updateView();
+
+    }
+
+    public void updateView() {
+
+
+        if (myGarage.getTotalVehicleNumber() != 0) {
+
+            int vehicleTempID = vehicleID - 1;
+
+            infoLabel.setText("Make: " + myGarage.getVehicle(vehicleTempID).getMake()
+                    + "\nModel: " + myGarage.getVehicle(vehicleTempID).getModel()
+                    + "\nYear: " + myGarage.getVehicle(vehicleTempID).getYear());
+        }
+
+        totalNumberLabel.setText("Total Vehicles: " + myGarage.getTotalVehicleNumber());
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+}
